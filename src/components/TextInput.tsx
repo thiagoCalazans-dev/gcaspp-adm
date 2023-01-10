@@ -10,7 +10,7 @@ export interface TextInputRootProps
 
 export const input = cva(
   [
-    "flex items-center gap-3 h-12 py-4 px-3 rounded border-2 border-gray-700 bg-gray-900 focus-within:ring-2 ring-blue-600 group",
+    "flex items-center gap-3 h-12 py-4 px-3 rounded border-2 border-gray-700 bg-gray-900 focus-within:border-blue-600 group",
   ],
   {
     variants: {

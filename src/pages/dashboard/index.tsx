@@ -13,16 +13,18 @@ export default function Dashboard() {
       </Head>
       <div className="max-w-6xl m-auto">
         <div className="flex gap-2">
-          <label htmlFor="search" className="flex flex-1 flex-col gap-1">
+          <label htmlFor="search" className="flex-1">
             <Text>Selecione um contrato:</Text>
-            <TextInput.Root>
-              <TextInput.Icon>
-                <MagnifyingGlass />
-              </TextInput.Icon>
-              <TextInput.Input id="search" placeholder="Procurar contrato" />
-            </TextInput.Root>
+            <div className="flex gap-2">
+              <TextInput.Root>
+                <TextInput.Icon>
+                  <MagnifyingGlass />
+                </TextInput.Icon>
+                <TextInput.Input id="search" placeholder="Procurar contrato" />
+              </TextInput.Root>
+              <Button className="w-48">Novo Contrato</Button>
+            </div>
           </label>
-          <Button>Novo Contrato</Button>
         </div>
       </div>
     </>
