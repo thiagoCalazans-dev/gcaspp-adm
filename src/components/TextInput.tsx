@@ -44,7 +44,7 @@ export interface TextInputIconProps {
 
 function TextInputIcon(props: TextInputIconProps) {
   return (
-    <Slot className="w-6 h-6 text-gray-600 group-focus:text-blue-600">
+    <Slot className="w-6 h-6 text-gray-600 group-focus-within:text-blue-600">
       {props.children}
     </Slot>
   );

@@ -10,7 +10,7 @@ export const text = cva(["text-gray-100 font-sans"], {
       md: ["text-lg"],
       lg: ["text-xl"],
       xl: ["text-2xl"],
-      xxl: ["text-4xl"],
+      xxl: ["text-5xl"],
     },
   },
   defaultVariants: {

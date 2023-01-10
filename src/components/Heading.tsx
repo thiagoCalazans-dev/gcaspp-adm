@@ -15,7 +15,7 @@ export const heading = cva(["text-gray-100 font-bold font-sans"], {
       sm: ["text-lg"],
       md: ["text-xl"],
       lg: ["text-2xl"],
-      xl: ["text-4xl"],
+      xl: ["text-5xl"],
     },
   },
 });

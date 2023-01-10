@@ -3,7 +3,7 @@ import { Box } from "../components/Box";
 import { Heading } from "../components/Heading";
 import { Text } from "../components/Text";
 import { TextInput } from "../components/TextInput";
-import { Envelope, Lock } from "phosphor-react";
+import { Envelope, Lock, User } from "phosphor-react";
 import { Button } from "../components/Button";
 
 export default function Home() {
@@ -23,26 +23,26 @@ export default function Home() {
         justify-center   
         text-gray-100"
       >
-        <aside className="flex flex-col gap-8 max-w-md">
+        <aside className="flex flex-col gap-8 max-w-lg">
           <Heading size="xl">GCASPP ADMIN</Heading>
           <Text size="xxl">Faça seu login na plataforma</Text>
         </aside>
         <Box>
           <form className="flex flex-col gap-4 items-stretch w-96">
-            <label htmlFor="email" className="flex flex-col gap-3">
-              <Text className="font-semibold">Endereço de e-mail</Text>
+            <label htmlFor="email" className="flex flex-col gap-1">
+              <Text className="font-semibold">Seu usuário</Text>
               <TextInput.Root>
                 <TextInput.Icon>
-                  <Envelope />
+                  <User />
                 </TextInput.Icon>
                 <TextInput.Input
                   type="email"
                   id="email"
-                  placeholder="Digite seu e-mail"
+                  placeholder="Digite seu usuário"
                 />
               </TextInput.Root>
             </label>
-            <label htmlFor="password" className="flex flex-col gap-3">
+            <label htmlFor="password" className="flex flex-col gap-1">
               <Text className="font-semibold">Sua senha</Text>
               <TextInput.Root>
                 <TextInput.Icon>
