@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Contract {
+  id                 Int       @id @default(autoincrement())
+  name               String    @unique
+  number             String
+  modality_id        Int
+  initial_date       DateTime
+  due_date           DateTime
+  first_invoice_date DateTime?
+  renewals           Renewal[]
+  invoices           Invoice[]
+  Modality           Modality  @relation(fields: [modality_id], references: [id])
+
+  @@map("contracts")
+}
+
+model Renewal {
+  id           Int       @id @default(autoincrement())
+  number       Int
+  initial_date DateTime
+  due_date     DateTime
+  Contract     Contract? @relation(fields: [contract_id], references: [id])
+  contract_id  Int?
+
+  @@map("renewals")
+}
+
+model Invoice {
+  id             Int       @id @default(autoincrement())
+  number         Int
+  Contract       Contract? @relation(fields: [contractId], references: [id])
+  contractId     Int?
+  value          Decimal
+  taxes          Decimal
+  net_value      Decimal
+  reference_date DateTime //colocar mes e ano somente
+  payment_date   DateTime // vencimento do boleto desta fatura
+  next_invoice   DateTime //quando deve faturar a proxima
+  description    String
+
+  @@map("invoices")
+}
+
+model Modality {
+  id       Int        @id @default(autoincrement())
+  name     String
+  contract Contract[]
+
+  @@map("modalities")
+}

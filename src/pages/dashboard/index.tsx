@@ -1,10 +1,22 @@
 import Head from "next/head";
 import { MagnifyingGlass } from "phosphor-react";
+import { useEffect } from "react";
+import { resourceLimits } from "worker_threads";
 import { Button } from "../../components/Button";
 import { Text } from "../../components/Text";
 import { TextInput } from "../../components/TextInput";
+import { api } from "../../lib/axios";
+
+async function getDashboardData() {
+  return await api("dashboard").then((result) => result.data);
+}
 
 export default function Dashboard() {
+  useEffect(() => {
+    const x = getDashboardData();
+    console.log(x);
+  }, []);
+
   return (
     <>
       <Head>
@@ -32,13 +44,13 @@ export default function Dashboard() {
               <thead>
                 <tr>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Municipio</Text>
+                    <Text size="sm">Cliente</Text>
                   </th>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
                     <Text size="sm">Contrato</Text>
                   </th>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Pregão</Text>
+                    <Text size="sm">Modalidade</Text>
                   </th>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
                     <Text size="sm">Processo</Text>
@@ -127,3 +139,13 @@ export default function Dashboard() {
     </>
   );
 }
+
+// export async function getServerSideProps() {
+//   const dashboardData = await api("dashboard").then((result) => result.data);
+
+//   console.log(dashboardData);
+
+//   return {
+//     props: { dashboardData },
+//   };
+// }
