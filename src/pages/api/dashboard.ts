@@ -17,6 +17,8 @@ export default async function handler(
     },
   });
 
+  const dateFormatter = new Intl.DateTimeFormat("pt-BR");
+
   function getDueDate(contract: any) {
     if (contract.renewals > 0) {
       new Date(
@@ -28,7 +30,7 @@ export default async function handler(
         )
       );
     }
-    return contract.due_date;
+    return new Date(contract.due_date);
   }
 
   function getNextInvoiceDate(contract: any) {
@@ -37,7 +39,7 @@ export default async function handler(
         Math.max.apply(
           null,
           contract.renewals.map((item: any) => {
-            return new Date(item.next_invoice);
+            return dateFormatter.format(new Date(item.next_invoice));
           })
         )
       );
@@ -49,11 +51,11 @@ export default async function handler(
     return {
       id: item.id,
       name: item.name,
-      number: item.name,
+      number: item.number,
       modality: item.Modality.name,
-      initialDate: item.initial_date,
-      dueDate: getDueDate(item),
-      nextInvoice: getNextInvoiceDate(item),
+      initialDate: dateFormatter.format(item.initial_date),
+      dueDate: dateFormatter.format(getDueDate(item)),
+      nextInvoice: dateFormatter.format(getNextInvoiceDate(item)),
     };
   });
 

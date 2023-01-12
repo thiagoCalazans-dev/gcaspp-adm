@@ -1,20 +1,32 @@
 import Head from "next/head";
 import { MagnifyingGlass } from "phosphor-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { resourceLimits } from "worker_threads";
 import { Button } from "../../components/Button";
 import { Text } from "../../components/Text";
 import { TextInput } from "../../components/TextInput";
 import { api } from "../../lib/axios";
 
-async function getDashboardData() {
-  return await api("dashboard").then((result) => result.data);
+interface ContractsTable {
+  id: number;
+  name: string;
+  number: number;
+  modality: string;
+  initialDate: string;
+  dueDate: string;
+  nextInvoice: string;
 }
 
 export default function Dashboard() {
+  async function getDashboardData() {
+    const data = await api("dashboard").then((result) => result.data);
+    setTableDAta(data);
+  }
+
+  const [tableData, setTableDAta] = useState<ContractsTable[]>([]);
+
   useEffect(() => {
-    const x = getDashboardData();
-    console.log(x);
+    getDashboardData();
   }, []);
 
   return (
@@ -47,19 +59,10 @@ export default function Dashboard() {
                     <Text size="sm">Cliente</Text>
                   </th>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Contrato</Text>
+                    <Text size="sm">Numero</Text>
                   </th>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
                     <Text size="sm">Modalidade</Text>
-                  </th>
-                  <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Processo</Text>
-                  </th>
-                  <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Data inicial</Text>
-                  </th>
-                  <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Aditivo nº</Text>
                   </th>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
                     <Text size="sm">Data inicial</Text>
@@ -70,67 +73,43 @@ export default function Dashboard() {
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
                     <Text size="sm">Proxima Fatura</Text>
                   </th>
+                  <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
+                    <Text size="sm">Action</Text>
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">Campinas</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">09/2019</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">0002/2019</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">CAMPREV.2018.00000932-07</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/05/2019</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700 text-center">
-                    <Text size="sm">11°</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/05/2022</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/05/2023</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/02/2022</Text>
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">Campinas</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">09/2019</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">0002/2019</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">CAMPREV.2018.00000932-07</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/05/2019</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700  text-center">
-                    <Text size="sm">11°</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/05/2022</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/05/2023</Text>
-                  </td>
-                  <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                    <Text size="sm">02/02/2022</Text>
-                  </td>
-                </tr>
+                {!tableData ? (
+                  <p>loading...</p>
+                ) : (
+                  tableData.map((contract) => {
+                    return (
+                      <tr key={contract.id}>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Text size="sm">{contract.name}</Text>
+                        </td>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Text size="sm">{contract.number}</Text>
+                        </td>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Text size="sm">{contract.modality}</Text>
+                        </td>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Text size="sm">{contract.initialDate}</Text>
+                        </td>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Text size="sm">{contract.dueDate}</Text>
+                        </td>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Text size="sm">{contract.nextInvoice}</Text>
+                        </td>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
+                          <Button size="small">click</Button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
