@@ -17,7 +17,7 @@ model Contract {
   modality_id        Int
   initial_date       DateTime
   due_date           DateTime
-  first_invoice_date DateTime?
+  first_invoice_date DateTime
   renewals           Renewal[]
   invoices           Invoice[]
   Modality           Modality  @relation(fields: [modality_id], references: [id])

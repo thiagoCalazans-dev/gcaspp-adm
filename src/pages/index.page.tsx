@@ -27,7 +27,7 @@ export default function Home() {
           <Heading size="xl">GCASPP ADMIN</Heading>
           <Text size="xxl">Faça seu login na plataforma</Text>
         </aside>
-        <Box>
+        <Box padding="xl">
           <form className="flex flex-col gap-4 items-stretch w-96">
             <label htmlFor="email" className="flex flex-col gap-1">
               <Text className="font-semibold">Seu usuário</Text>

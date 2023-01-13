@@ -6,6 +6,7 @@ import { Button } from "../../components/Button";
 import { Text } from "../../components/Text";
 import { TextInput } from "../../components/TextInput";
 import { api } from "../../lib/axios";
+import { NewContract } from "./components/NewContract";
 
 interface ContractsTable {
   id: number;
@@ -50,9 +51,10 @@ export default function Dashboard() {
             </div>
           </label>
         </div>
-        <main className="py-4">
+        <NewContract />
+        {/* <main className="py-4">
           <div className="flex min-w-full shadow rounded-lg overflow-hidden overflow-x-auto">
-            <table className="min-w-full leading-normal ">
+            <table className="min-w-full leading-normal">
               <thead>
                 <tr>
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
@@ -113,7 +115,7 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
-        </main>
+        </main> */}
       </div>
     </>
   );
