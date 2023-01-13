@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
+import { HTMLAttributes, InputHTMLAttributes, ReactNode } from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, VariantProps } from "class-variance-authority";
 
@@ -51,19 +51,12 @@ function TextInputIcon(props: TextInputIconProps) {
 }
 
 export interface TextInputInputProps
-  extends InputHTMLAttributes<HTMLInputElement> {}
-
-function TextInputInput(props: TextInputInputProps) {
-  return (
-    <input
-      className="bg-transparent flex-1 text-gray-100 text-xs placeholder:text-gray-400 outline-none"
-      {...props}
-    />
-  );
+  extends InputHTMLAttributes<HTMLInputElement> {
+  name: string;
+  register: any;
 }
 
 export const TextInput = {
   Root: TextInputRoot,
-  Input: TextInputInput,
   Icon: TextInputIcon,
 };

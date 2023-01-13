@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../lib/prisma";
+import { dateFormatter } from "../../utils/formatter";
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,8 +17,6 @@ export default async function handler(
       invoices: true,
     },
   });
-
-  const dateFormatter = new Intl.DateTimeFormat("pt-BR");
 
   function getDueDate(contract: any) {
     if (contract.renewals > 0) {
@@ -39,12 +38,12 @@ export default async function handler(
         Math.max.apply(
           null,
           contract.renewals.map((item: any) => {
-            return dateFormatter.format(new Date(item.next_invoice));
+            return new Date(item.next_invoice);
           })
         )
       );
     }
-    return contract.first_invoice_date;
+    return new Date(contract.first_invoice_date);
   }
 
   const result = contracts.map((item) => {

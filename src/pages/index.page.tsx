@@ -35,7 +35,7 @@ export default function Home() {
                 <TextInput.Icon>
                   <User />
                 </TextInput.Icon>
-                <TextInput.Input
+                <input
                   type="email"
                   id="email"
                   placeholder="Digite seu usuário"
@@ -48,11 +48,7 @@ export default function Home() {
                 <TextInput.Icon>
                   <Lock />
                 </TextInput.Icon>
-                <TextInput.Input
-                  type="password"
-                  id="password"
-                  placeholder="******"
-                />
+                <input type="password" id="password" placeholder="******" />
               </TextInput.Root>
             </label>
             <Button>Entrar</Button>

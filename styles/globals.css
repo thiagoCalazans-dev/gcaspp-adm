@@ -5,3 +5,7 @@
 body {
   @apply bg-gray-900;
 }
+
+input {
+  @apply bg-transparent flex-1 text-gray-100 text-xs placeholder:text-gray-400 outline-none;
+}

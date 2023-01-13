@@ -45,9 +45,15 @@ export default function Dashboard() {
                 <TextInput.Icon>
                   <MagnifyingGlass />
                 </TextInput.Icon>
-                <TextInput.Input id="search" placeholder="Procurar contrato" />
+                <input
+                  id="search"
+                  name="search"
+                  placeholder="Procurar contrato"
+                />
               </TextInput.Root>
-              <Button className="w-48">Novo Contrato</Button>
+              <Button type="button" className="w-48">
+                Novo Contrato
+              </Button>
             </div>
           </label>
         </div>
