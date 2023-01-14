@@ -1,12 +1,14 @@
 import Head from "next/head";
-import { MagnifyingGlass } from "phosphor-react";
+import { MagnifyingGlass, X } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { resourceLimits } from "worker_threads";
 import { Button } from "../../components/Button";
 import { Text } from "../../components/Text";
 import { TextInput } from "../../components/TextInput";
 import { api } from "../../lib/axios";
 import { NewContract } from "./components/NewContract";
+import * as Dialog from "@radix-ui/react-dialog";
+import { Box } from "../../components/Box";
+import { Heading } from "../../components/Heading";
 
 interface ContractsTable {
   id: number;
@@ -51,14 +53,38 @@ export default function Dashboard() {
                   placeholder="Procurar contrato"
                 />
               </TextInput.Root>
-              <Button type="button" className="w-48">
-                Novo Contrato
-              </Button>
+              <Dialog.Root>
+                <Dialog.Trigger asChild>
+                  <Button type="button" className="w-48">
+                    Novo Contrato
+                  </Button>
+                </Dialog.Trigger>
+                <Dialog.Portal>
+                  <Dialog.Overlay className="bg-opacity-40 bg-gray-900 fixed inset-0">
+                    <Dialog.Content className="fixed top-[50%]   left-[50%] translate-y-[-50%] translate-x-[-50%]">
+                      <Box className="relative flex flex-col justify-center items-center">
+                        <Heading size="md" className="uppercase text-center">
+                          novo contrato
+                        </Heading>
+                        <NewContract />
+                        <Dialog.Close asChild>
+                          <button
+                            className="bg-blue-600  absolute top-3 right-3 text-gray-100 inline-flex items-center justify-center h-6 w-6 rounded-full outline-none focus:ring-2 focus:ring-gray-100"
+                            aria-label="Close"
+                          >
+                            <X className="text-gray-100" />
+                          </button>
+                        </Dialog.Close>
+                      </Box>
+                    </Dialog.Content>
+                  </Dialog.Overlay>
+                </Dialog.Portal>
+              </Dialog.Root>
             </div>
           </label>
         </div>
-        <NewContract />
-        {/* <main className="py-4">
+
+        <main className="py-4">
           <div className="flex min-w-full shadow rounded-lg overflow-hidden overflow-x-auto">
             <table className="min-w-full leading-normal">
               <thead>
@@ -121,7 +147,7 @@ export default function Dashboard() {
               </tbody>
             </table>
           </div>
-        </main> */}
+        </main>
       </div>
     </>
   );

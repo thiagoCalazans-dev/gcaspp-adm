@@ -7,6 +7,8 @@ import { TextInput } from "../../../components/TextInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/Button";
+import * as Select from "@radix-ui/react-select";
+import { CaretDown } from "phosphor-react";
 
 const contractSchema = z.object({
   name: z
@@ -36,83 +38,78 @@ export function NewContract() {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center">
-      <Box>
-        <Heading size="md" className="uppercase text-center">
-          novo contrato
-        </Heading>
-        <form className="mt-3" onSubmit={handleSubmit(createContractSubmit)}>
-          <label htmlFor="name" className="flex flex-col">
-            <Text size="sm">Nome :</Text>
-            <TextInput.Root>
-              <input
-                type="text"
-                id="name"
-                placeholder=""
-                {...register("name")}
-              />
-            </TextInput.Root>
-          </label>
-          <label htmlFor="number" className="flex flex-col">
-            <Text size="sm">Número :</Text>
-            <TextInput.Root>
-              <input
-                type="text"
-                id="number"
-                placeholder=""
-                {...register("number")}
-              />
-            </TextInput.Root>
-          </label>
-          <label htmlFor="modalityId" className="flex flex-col">
-            <Text size="sm">Modalidade :</Text>
-            <TextInput.Root>
-              <input
-                type="text"
-                id="modalityId"
-                placeholder=""
-                {...register("modalityId")}
-              />
-            </TextInput.Root>
-          </label>
-          <label htmlFor="initialDate" className="flex flex-col">
-            <Text size="sm">Data Inicial :</Text>
-            <TextInput.Root>
-              <input
-                type="text"
-                id="initialDate"
-                placeholder=""
-                {...register("initialDate")}
-              />
-            </TextInput.Root>
-          </label>
-          <label htmlFor="dueDate" className="flex flex-col">
-            <Text size="sm">Vencimento :</Text>
-            <TextInput.Root>
-              <input
-                type="text"
-                id="dueDate"
-                placeholder=""
-                {...register("dueDate")}
-              />
-            </TextInput.Root>
-          </label>
-          <label htmlFor="firstInvoiceDate" className="flex flex-col">
-            <Text size="sm">Primeira Fatura :</Text>
-            <TextInput.Root>
-              <input
-                type="text"
-                id="firstInvoiceDate"
-                placeholder=""
-                {...register("firstInvoiceDate")}
-              />
-            </TextInput.Root>
-          </label>
-          <Button type="submit" disabled={isSubmitting} className="w-full mt-2">
-            Cadastrar
-          </Button>
-        </form>
-      </Box>
-    </main>
+    <form className="mt-3" onSubmit={handleSubmit(createContractSubmit)}>
+      <label htmlFor="name" className="flex flex-col">
+        <Text size="sm">Nome :</Text>
+        <TextInput.Root>
+          <input type="text" id="name" placeholder="" {...register("name")} />
+        </TextInput.Root>
+      </label>
+      <div className="flex items-end gap-2">
+        <label htmlFor="number" className="flex flex-col flex-1">
+          <Text size="sm">Número :</Text>
+          <TextInput.Root>
+            <input
+              type="text"
+              id="number"
+              placeholder=""
+              {...register("number")}
+            />
+          </TextInput.Root>
+        </label>
+        <label htmlFor="initialDate" className="flex flex-col">
+          <Text size="sm">Data Inicial :</Text>
+          <TextInput.Root>
+            <input
+              type="text"
+              id="initialDate"
+              placeholder=""
+              {...register("initialDate")}
+            />
+          </TextInput.Root>
+        </label>
+        <select
+          className="bg-gray-700 py-3 rounded-md w-auto  text-center text-gray-100 outline-none uppercase focus:ring-2 focus:ring-blue-600"
+          {...register("modalityId")}
+        >
+          <Text asChild>
+            <option value="1">dispensa</option>
+          </Text>
+          <Text asChild>
+            <option value="2">convite</option>
+          </Text>
+          <Text asChild>
+            <option value="3">pregão</option>
+          </Text>
+        </select>
+      </div>
+      <div className="flex gap-2">
+        <label htmlFor="dueDate" className="flex flex-col flex-1">
+          <Text size="sm">Vencimento :</Text>
+          <TextInput.Root>
+            <input
+              type="text"
+              id="dueDate"
+              placeholder=""
+              {...register("dueDate")}
+            />
+          </TextInput.Root>
+        </label>
+        <label htmlFor="firstInvoiceDate" className="flex flex-col flex-1">
+          <Text size="sm">Primeira Fatura :</Text>
+          <TextInput.Root>
+            <input
+              type="text"
+              id="firstInvoiceDate"
+              placeholder=""
+              {...register("firstInvoiceDate")}
+            />
+          </TextInput.Root>
+        </label>
+      </div>
+      <Button type="submit" disabled={isSubmitting} className="w-full mt-2">
+        Cadastrar
+      </Button>
+    </form>
   );
 }
