@@ -1,14 +1,13 @@
 import Head from "next/head";
-import { MagnifyingGlass, X } from "phosphor-react";
+import { MagnifyingGlass, Medal, X } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
 import { Text } from "../../components/Text";
 import { TextInput } from "../../components/TextInput";
 import { api } from "../../lib/axios";
-import { NewContract } from "./components/NewContract";
-import * as Dialog from "@radix-ui/react-dialog";
-import { Box } from "../../components/Box";
+import { NewContractForm } from "./components/NewContractForm";
 import { Heading } from "../../components/Heading";
+import { Modal } from "../../components/Modal";
 
 interface ContractsTable {
   id: number;
@@ -53,33 +52,17 @@ export default function Dashboard() {
                   placeholder="Procurar contrato"
                 />
               </TextInput.Root>
-              <Dialog.Root>
-                <Dialog.Trigger asChild>
-                  <Button type="button" className="w-48">
-                    Novo Contrato
-                  </Button>
-                </Dialog.Trigger>
-                <Dialog.Portal>
-                  <Dialog.Overlay className="bg-opacity-40 bg-gray-900 fixed inset-0">
-                    <Dialog.Content className="fixed top-[50%]   left-[50%] translate-y-[-50%] translate-x-[-50%]">
-                      <Box className="relative flex flex-col justify-center items-center">
-                        <Heading size="md" className="uppercase text-center">
-                          novo contrato
-                        </Heading>
-                        <NewContract />
-                        <Dialog.Close asChild>
-                          <button
-                            className="bg-blue-600  absolute top-3 right-3 text-gray-100 inline-flex items-center justify-center h-6 w-6 rounded-full outline-none focus:ring-2 focus:ring-gray-100"
-                            aria-label="Close"
-                          >
-                            <X className="text-gray-100" />
-                          </button>
-                        </Dialog.Close>
-                      </Box>
-                    </Dialog.Content>
-                  </Dialog.Overlay>
-                </Dialog.Portal>
-              </Dialog.Root>
+              <Modal.Root>
+                <Button asChild className="w-48">
+                  <Modal.Trigger type="button">Novo Contrato</Modal.Trigger>
+                </Button>
+                <Modal.Content>
+                  <Heading size="md" className="uppercase text-center">
+                    novo contrato
+                  </Heading>
+                  <NewContractForm />
+                </Modal.Content>
+              </Modal.Root>
             </div>
           </label>
         </div>

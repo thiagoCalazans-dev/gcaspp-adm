@@ -7,8 +7,7 @@ import { TextInput } from "../../../components/TextInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/Button";
-import * as Select from "@radix-ui/react-select";
-import { CaretDown } from "phosphor-react";
+import { dateFormatter } from "../../../utils/formatter";
 
 const contractSchema = z.object({
   name: z
@@ -16,15 +15,15 @@ const contractSchema = z.object({
     .min(3, { message: "O usuário precisa ter pelo menos 3 letras." })
     .transform((name) => name.toLowerCase()),
   number: z.string().min(1, { message: "o numero deve ser maior que 0" }),
-  modalityId: z.string(),
-  initialDate: z.string(),
+  initialDate: z.date().transform((date) => dateFormatter.format(date)),
+  modalityId: z.number(),
   dueDate: z.string(),
   firstInvoiceDate: z.string(),
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
 
-export function NewContract() {
+export function NewContractForm() {
   const {
     register,
     handleSubmit,
@@ -44,6 +43,11 @@ export function NewContract() {
         <TextInput.Root>
           <input type="text" id="name" placeholder="" {...register("name")} />
         </TextInput.Root>
+        {errors.name && (
+          <Text variant="error" size="sm">
+            {errors.name.message}
+          </Text>
+        )}
       </label>
       <div className="flex items-end gap-2">
         <label htmlFor="number" className="flex flex-col flex-1">
@@ -83,6 +87,13 @@ export function NewContract() {
           </Text>
         </select>
       </div>
+      <ul>
+        {errors.number && (
+          <Text asChild variant="error" size="sm">
+            <li>{errors.number.message}</li>
+          </Text>
+        )}
+      </ul>
       <div className="flex gap-2">
         <label htmlFor="dueDate" className="flex flex-col flex-1">
           <Text size="sm">Vencimento :</Text>
