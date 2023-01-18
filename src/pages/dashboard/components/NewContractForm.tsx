@@ -12,19 +12,13 @@ const contractSchema = z.object({
     .min(1, { message: "Insira um nome." })
     .transform((name) => name.toLowerCase()),
   number: z.string().min(1, { message: "Insira um número." }),
-  initialDate: z
-    .string()
-    .datetime()
-    .min(1, { message: "Insira uma data inicial." })
-    .transform((data) => new Date(data)),
-
+  initialDate: z.preprocess((arg) => {
+    if (typeof arg == "string" || arg instanceof Date)
+      return new Date(arg + "T00:00:00-03:00");
+  }, z.date()),
   modalityId: z.string(),
-  dueDate: z.string().datetime().min(1, { message: "Insira um vencimento." }),
-  firstInvoiceDate: z
-    .string()
-
-    .datetime()
-    .min(1, { message: "Insira uma data para primeira fatura." }),
+  dueDate: z.string(),
+  firstInvoiceDate: z.string(),
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
@@ -67,25 +61,12 @@ export function NewContractForm() {
             />
           </TextInput.Root>
         </label>
-        {/* <div className="flex items-center justify-center">
-          <div className="datepicker relative form-floating mb-3 xl:w-96">
-            <input
-              type="text"
-              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-              placeholder="Select a date"
-            />
-            <label htmlFor="floatingInput" className="text-gray-700">
-              Select a date
-            </label>
-          </div>
-        </div> */}
-
         <label htmlFor="initialDate" className="flex flex-col">
           <Text size="sm">Data Inicial :</Text>
           <TextInput.Root>
             <input
               className=""
-              type="string"
+              type="date"
               id="initialDate"
               placeholder=""
               {...register("initialDate")}
