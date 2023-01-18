@@ -1,24 +1,30 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Box } from "../../../components/Box";
-import { Heading } from "../../../components/Heading";
 import { Text } from "../../../components/Text";
 import { TextInput } from "../../../components/TextInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/Button";
-import { dateFormatter } from "../../../utils/formatter";
 
 const contractSchema = z.object({
   name: z
     .string()
-    .min(3, { message: "O usuário precisa ter pelo menos 3 letras." })
+    .min(1, { message: "Insira um nome." })
     .transform((name) => name.toLowerCase()),
-  number: z.string().min(1, { message: "o numero deve ser maior que 0" }),
-  initialDate: z.date().transform((date) => dateFormatter.format(date)),
-  modalityId: z.number(),
-  dueDate: z.string(),
-  firstInvoiceDate: z.string(),
+  number: z.string().min(1, { message: "Insira um número." }),
+  initialDate: z
+    .string()
+    .datetime()
+    .min(1, { message: "Insira uma data inicial." })
+    .transform((data) => new Date(data)),
+
+  modalityId: z.string(),
+  dueDate: z.string().datetime().min(1, { message: "Insira um vencimento." }),
+  firstInvoiceDate: z
+    .string()
+
+    .datetime()
+    .min(1, { message: "Insira uma data para primeira fatura." }),
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
@@ -61,11 +67,25 @@ export function NewContractForm() {
             />
           </TextInput.Root>
         </label>
+        {/* <div className="flex items-center justify-center">
+          <div className="datepicker relative form-floating mb-3 xl:w-96">
+            <input
+              type="text"
+              className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+              placeholder="Select a date"
+            />
+            <label htmlFor="floatingInput" className="text-gray-700">
+              Select a date
+            </label>
+          </div>
+        </div> */}
+
         <label htmlFor="initialDate" className="flex flex-col">
           <Text size="sm">Data Inicial :</Text>
           <TextInput.Root>
             <input
-              type="text"
+              className=""
+              type="string"
               id="initialDate"
               placeholder=""
               {...register("initialDate")}
@@ -93,13 +113,18 @@ export function NewContractForm() {
             <li>{errors.number.message}</li>
           </Text>
         )}
+        {errors.initialDate && (
+          <Text asChild variant="error" size="sm">
+            <li>{errors.initialDate.message}</li>
+          </Text>
+        )}
       </ul>
       <div className="flex gap-2">
         <label htmlFor="dueDate" className="flex flex-col flex-1">
           <Text size="sm">Vencimento :</Text>
           <TextInput.Root>
             <input
-              type="text"
+              type="string"
               id="dueDate"
               placeholder=""
               {...register("dueDate")}
@@ -110,7 +135,7 @@ export function NewContractForm() {
           <Text size="sm">Primeira Fatura :</Text>
           <TextInput.Root>
             <input
-              type="text"
+              type="string"
               id="firstInvoiceDate"
               placeholder=""
               {...register("firstInvoiceDate")}
@@ -118,6 +143,18 @@ export function NewContractForm() {
           </TextInput.Root>
         </label>
       </div>
+      <ul>
+        {errors.dueDate && (
+          <Text asChild variant="error" size="sm">
+            <li>{errors.dueDate.message}</li>
+          </Text>
+        )}
+        {errors.firstInvoiceDate && (
+          <Text asChild variant="error" size="sm">
+            <li>{errors.firstInvoiceDate.message}</li>
+          </Text>
+        )}
+      </ul>
       <Button type="submit" disabled={isSubmitting} className="w-full mt-2">
         Cadastrar
       </Button>
