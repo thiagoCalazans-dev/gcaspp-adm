@@ -5,20 +5,24 @@ import { TextInput } from "../../../components/TextInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/Button";
+import { inputDateValidation } from "../../../utils/preprocessFormValidations";
+import { api } from "../../../lib/axios";
+import { AxiosError } from "axios";
 
 const contractSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Insira um nome." })
     .transform((name) => name.toLowerCase()),
-  number: z.string().min(1, { message: "Insira um número." }),
-  initialDate: z.preprocess((arg) => {
-    if (typeof arg == "string" || arg instanceof Date)
-      return new Date(arg + "T00:00:00-03:00");
-  }, z.date()),
+  number: z.preprocess(
+    (a) => parseInt(a as string, 10),
+    z.number().positive().max(100),
+    z.number().positive({ message: "o numero deve ser maior que zero" })
+  ),
+  initialDate: z.preprocess(inputDateValidation, z.date()),
   modalityId: z.string(),
-  dueDate: z.string(),
-  firstInvoiceDate: z.string(),
+  dueDate: z.preprocess(inputDateValidation, z.date()),
+  firstInvoiceDate: z.preprocess(inputDateValidation, z.date()),
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
@@ -32,8 +36,22 @@ export function NewContractForm() {
     resolver: zodResolver(contractSchema),
   });
 
-  function createContractSubmit(data: ContractFormData) {
-    console.log(data);
+  async function createContractSubmit(data: ContractFormData) {
+    try {
+      await api.post("/api/contract/create", {
+        name: data.name,
+        number: data.number,
+        initialDate: data.initialDate,
+        modalityId: data.modalityId,
+        dueDate: data.dueDate,
+        firstInvoiceDate: data.firstInvoiceDate,
+      });
+    } catch (err) {
+      if (err instanceof AxiosError && err?.response?.data?.message) {
+        alert(err.response.data.message);
+        return;
+      }
+    }
   }
 
   return (
@@ -54,7 +72,7 @@ export function NewContractForm() {
           <Text size="sm">Número :</Text>
           <TextInput.Root>
             <input
-              type="text"
+              type="number"
               id="number"
               placeholder=""
               {...register("number")}
@@ -65,7 +83,7 @@ export function NewContractForm() {
           <Text size="sm">Data Inicial :</Text>
           <TextInput.Root>
             <input
-              className=""
+              className="filter"
               type="date"
               id="initialDate"
               placeholder=""
@@ -105,7 +123,7 @@ export function NewContractForm() {
           <Text size="sm">Vencimento :</Text>
           <TextInput.Root>
             <input
-              type="string"
+              type="date"
               id="dueDate"
               placeholder=""
               {...register("dueDate")}
@@ -116,7 +134,7 @@ export function NewContractForm() {
           <Text size="sm">Primeira Fatura :</Text>
           <TextInput.Root>
             <input
-              type="string"
+              type="date"
               id="firstInvoiceDate"
               placeholder=""
               {...register("firstInvoiceDate")}
