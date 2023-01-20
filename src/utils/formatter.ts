@@ -1,1 +1,6 @@
-export const dateFormatter = new Intl.DateTimeFormat("pt-BR");
+import dayjs from "dayjs";
+
+export function inputDateFormatToISOString(string: string) {
+  const date = dayjs(string).toISOString();
+  return date;
+}

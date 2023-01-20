@@ -5,24 +5,21 @@ import { TextInput } from "../../../components/TextInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/Button";
-import { inputDateValidation } from "../../../utils/preprocessFormValidations";
+import dayjs from "dayjs";
 import { api } from "../../../lib/axios";
 import { AxiosError } from "axios";
+import { inputDateFormatToISOString } from "../../../utils/formatter";
 
 const contractSchema = z.object({
   name: z
     .string()
     .min(1, { message: "Insira um nome." })
     .transform((name) => name.toLowerCase()),
-  number: z.preprocess(
-    (a) => parseInt(a as string, 10),
-    z.number().positive().max(100),
-    z.number().positive({ message: "o numero deve ser maior que zero" })
-  ),
-  initialDate: z.preprocess(inputDateValidation, z.date()),
+  number: z.string(),
+  initialDate: z.string(),
   modalityId: z.string(),
-  dueDate: z.preprocess(inputDateValidation, z.date()),
-  firstInvoiceDate: z.preprocess(inputDateValidation, z.date()),
+  firstInvoiceDate: z.string(),
+  dueDate: z.string(),
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
@@ -38,12 +35,14 @@ export function NewContractForm() {
 
   async function createContractSubmit(data: ContractFormData) {
     try {
-      await api.post("/api/contract/create", {
+      await api.post("/contract/create", {
         name: data.name,
         number: data.number,
-        initialDate: data.initialDate,
-        modalityId: data.modalityId,
-        dueDate: data.dueDate,
+        initialDate: {
+          date: inputDateFormatToISOString(data.modalityId),
+        },
+        modalityId: inputDateFormatToISOString(data.modalityId),
+        dueDate: inputDateFormatToISOString(data.dueDate),
         firstInvoiceDate: data.firstInvoiceDate,
       });
     } catch (err) {
