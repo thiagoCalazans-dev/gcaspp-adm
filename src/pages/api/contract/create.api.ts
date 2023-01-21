@@ -4,8 +4,8 @@ import { prisma } from "../../../lib/prisma";
 
 const newContractSchema = z.object({
   name: z.string().transform((name) => name.toLowerCase()),
-  number: z.string(),
-  modalityId: z.string(),
+  number: z.number(),
+  modalityId: z.number(),
   initialDate: z.string().datetime(),
   dueDate: z.string().datetime(),
   firstInvoiceDate: z.string().datetime(),
@@ -22,7 +22,16 @@ export default async function handler(
   const { name, dueDate, firstInvoiceDate, initialDate, modalityId, number } =
     newContractSchema.parse(req.body);
 
-  console.log(name, dueDate, firstInvoiceDate, initialDate, modalityId, number);
+  prisma.contract.create({
+    data: {
+      name,
+      number,
+      modalityId,
+      initialDate,
+      firstInvoiceDate,
+      dueDate,
+    },
+  });
 
   res.status(201).json(req.body);
 }

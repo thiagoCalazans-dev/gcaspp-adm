@@ -15,11 +15,25 @@ const contractSchema = z.object({
     .string()
     .min(1, { message: "Insira um nome." })
     .transform((name) => name.toLowerCase()),
-  number: z.string(),
-  initialDate: z.string(),
-  modalityId: z.string(),
-  firstInvoiceDate: z.string(),
-  dueDate: z.string(),
+  number: z
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .refine((item) => item > 0),
+  initialDate: z
+    .string()
+    .transform((dateString) => inputDateFormatToISOString(dateString)),
+  modalityId: z
+    .string()
+    .regex(/^\d+$/)
+    .transform(Number)
+    .refine((item) => item > 0),
+  firstInvoiceDate: z
+    .string()
+    .transform((dateString) => inputDateFormatToISOString(dateString)),
+  dueDate: z
+    .string()
+    .transform((dateString) => inputDateFormatToISOString(dateString)),
 });
 
 type ContractFormData = z.infer<typeof contractSchema>;
@@ -34,17 +48,9 @@ export function NewContractForm() {
   });
 
   async function createContractSubmit(data: ContractFormData) {
+    console.log(data);
     try {
-      await api.post("/contract/create", {
-        name: data.name,
-        number: data.number,
-        initialDate: {
-          date: inputDateFormatToISOString(data.modalityId),
-        },
-        modalityId: inputDateFormatToISOString(data.modalityId),
-        dueDate: inputDateFormatToISOString(data.dueDate),
-        firstInvoiceDate: data.firstInvoiceDate,
-      });
+      await api.post("/contract/create", data);
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
         alert(err.response.data.message);

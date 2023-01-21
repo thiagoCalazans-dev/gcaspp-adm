@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../lib/prisma";
-import { dateFormatter } from "../../utils/formatter";
+import { formatDateStringToBrDate } from "../../utils/formatter";
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,12 +24,12 @@ export default async function handler(
         Math.max.apply(
           null,
           contract.renewals.map((item: any) => {
-            return new Date(item.due_date);
+            return formatDateStringToBrDate(item.due_date);
           })
         )
       );
     }
-    return new Date(contract.due_date);
+    return formatDateStringToBrDate(contract.due_date);
   }
 
   function getNextInvoiceDate(contract: any) {
@@ -38,12 +38,16 @@ export default async function handler(
         Math.max.apply(
           null,
           contract.renewals.map((item: any) => {
-            return new Date(item.next_invoice);
+            return formatDateStringToBrDate(item.next_invoice);
           })
         )
       );
     }
-    return new Date(contract.first_invoice_date);
+    return formatDateStringToBrDate(contract.first_invoice_date);
+  }
+
+  function getInitialDate(date: string | Date) {
+    return formatDateStringToBrDate(date);
   }
 
   const result = contracts.map((item) => {
@@ -52,9 +56,9 @@ export default async function handler(
       name: item.name,
       number: item.number,
       modality: item.Modality.name,
-      initialDate: dateFormatter.format(item.initial_date),
-      dueDate: dateFormatter.format(getDueDate(item)),
-      nextInvoice: dateFormatter.format(getNextInvoiceDate(item)),
+      initialDate: getInitialDate(item.initial_date),
+      dueDate: getNextInvoiceDate(item),
+      nextInvoice: getDueDate(item),
     };
   });
 

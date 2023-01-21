@@ -13,7 +13,7 @@ datasource db {
 model Contract {
   id                 Int       @id @default(autoincrement())
   name               String    @unique
-  number             String
+  number             Int
   modality_id        Int
   initial_date       DateTime
   due_date           DateTime
