@@ -5,10 +5,10 @@ import { TextInput } from "../../../components/TextInput";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../../../components/Button";
-import dayjs from "dayjs";
 import { api } from "../../../lib/axios";
 import { AxiosError } from "axios";
 import { inputDateFormatToISOString } from "../../../utils/formatter";
+import { Spinner } from "../../../components/Spinner";
 
 const contractSchema = z.object({
   name: z
@@ -17,11 +17,13 @@ const contractSchema = z.object({
     .transform((name) => name.toLowerCase()),
   number: z
     .string()
+    .min(1, { message: "insira um número" })
     .regex(/^\d+$/)
     .transform(Number)
     .refine((item) => item > 0),
   initialDate: z
     .string()
+    .min(8, { message: "insira uma data inicial" })
     .transform((dateString) => inputDateFormatToISOString(dateString)),
   modalityId: z
     .string()
@@ -30,9 +32,11 @@ const contractSchema = z.object({
     .refine((item) => item > 0),
   firstInvoiceDate: z
     .string()
+    .min(8, { message: "insira uma data para fatura" })
     .transform((dateString) => inputDateFormatToISOString(dateString)),
   dueDate: z
     .string()
+    .min(8, { message: "insira uma data de vencimento" })
     .transform((dateString) => inputDateFormatToISOString(dateString)),
 });
 
@@ -40,6 +44,7 @@ type ContractFormData = z.infer<typeof contractSchema>;
 
 export function NewContractForm() {
   const {
+    reset,
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
@@ -48,9 +53,9 @@ export function NewContractForm() {
   });
 
   async function createContractSubmit(data: ContractFormData) {
-    console.log(data);
     try {
       await api.post("/contract/create", data);
+      reset();
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
         alert(err.response.data.message);
@@ -159,8 +164,12 @@ export function NewContractForm() {
           </Text>
         )}
       </ul>
-      <Button type="submit" disabled={isSubmitting} className="w-full mt-2">
-        Cadastrar
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full mt-2 flex items-center justify-center"
+      >
+        {isSubmitting ? <Spinner /> : "cadastrar"}
       </Button>
     </form>
   );

@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { MagnifyingGlass, Medal, X } from "phosphor-react";
+import { MagnifyingGlass, Medal, PencilSimpleLine, X } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { Button } from "../../components/Button";
 import { Text } from "../../components/Text";
@@ -8,6 +8,7 @@ import { api } from "../../lib/axios";
 import { NewContractForm } from "./components/NewContractForm";
 import { Heading } from "../../components/Heading";
 import { Modal } from "../../components/Modal";
+import Link from "next/link";
 
 interface ContractsTable {
   id: number;
@@ -19,16 +20,16 @@ interface ContractsTable {
   nextInvoice: string;
 }
 
-export default function Dashboard() {
-  async function getDashboardData() {
-    const data = await api("dashboard").then((result) => result.data);
+export default function Contracts() {
+  async function getContractsData() {
+    const data = await api("contracts").then((result) => result.data);
     setTableDAta(data);
   }
 
   const [tableData, setTableDAta] = useState<ContractsTable[]>([]);
 
   useEffect(() => {
-    getDashboardData();
+    getContractsData();
   }, []);
 
   return (
@@ -90,8 +91,8 @@ export default function Dashboard() {
                   <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
                     <Text size="sm">Proxima Fatura</Text>
                   </th>
-                  <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-left font-semibold  uppercase tracking-wider">
-                    <Text size="sm">Action</Text>
+                  <th className="px-2 py-3 border-b-2 border-gray-600 bg-gray-800 text-center font-semibold  uppercase tracking-wider ">
+                    <Text size="sm">Detalhes</Text>
                   </th>
                 </tr>
               </thead>
@@ -120,8 +121,12 @@ export default function Dashboard() {
                         <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
                           <Text size="sm">{contract.nextInvoice}</Text>
                         </td>
-                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700">
-                          <Button size="small">click</Button>
+                        <td className="px-2 py-2 border-b border-gray-600 bg-gray-700 text-center">
+                          <Button size="small">
+                            <Link href={`/contracts/${contract.id}`}>
+                              <PencilSimpleLine />
+                            </Link>
+                          </Button>
                         </td>
                       </tr>
                     );

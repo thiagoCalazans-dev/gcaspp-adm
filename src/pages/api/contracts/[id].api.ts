@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../lib/prisma";
-import { formatDateStringToBrDate } from "../../utils/formatter";
+import { prisma } from "../../../lib/prisma";
+import { formatDateStringToBrDate } from "../../../utils/formatter";
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,11 +10,16 @@ export default async function handler(
     return res.status(405).end();
   }
 
-  const contracts = await prisma.contract.findMany({
+  const id = Number(req.query.id);
+
+  const contract = await prisma.contract.findUniqueOrThrow({
+    where: {
+      id,
+    },
     include: {
-      renewals: true,
-      Modality: true,
       invoices: true,
+      Modality: true,
+      renewals: true,
     },
   });
 
@@ -50,17 +55,5 @@ export default async function handler(
     return formatDateStringToBrDate(date);
   }
 
-  const result = contracts.map((item) => {
-    return {
-      id: item.id,
-      name: item.name,
-      number: item.number,
-      modality: item.Modality.name,
-      initialDate: getInitialDate(item.initial_date),
-      dueDate: getNextInvoiceDate(item),
-      nextInvoice: getDueDate(item),
-    };
-  });
-
-  res.status(200).json(result);
+  res.status(200).json(contract);
 }
