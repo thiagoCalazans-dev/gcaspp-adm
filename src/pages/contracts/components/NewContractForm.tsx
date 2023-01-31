@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Text } from "../../../components/Text";
 import { TextInput } from "../../../components/TextInput";
@@ -44,6 +44,7 @@ type ContractFormData = z.infer<typeof contractSchema>;
 
 export function NewContractForm() {
   const {
+    setValue,
     reset,
     register,
     handleSubmit,
@@ -54,7 +55,7 @@ export function NewContractForm() {
 
   async function createContractSubmit(data: ContractFormData) {
     try {
-      await api.post("/contract/create", data);
+      await api.post("/contracts/create", data);
       reset();
     } catch (err) {
       if (err instanceof AxiosError && err?.response?.data?.message) {
@@ -106,13 +107,13 @@ export function NewContractForm() {
           {...register("modalityId")}
         >
           <Text asChild>
-            <option value="1">dispensa</option>
+            <option value={1}>dispensa</option>
           </Text>
           <Text asChild>
-            <option value="2">convite</option>
+            <option value={2}>convite</option>
           </Text>
           <Text asChild>
-            <option value="3">pregão</option>
+            <option value={3}>pregão</option>
           </Text>
         </select>
       </div>

@@ -43,7 +43,7 @@ model Invoice {
   contractId     Int?
   value          Decimal
   taxes          Decimal
-  net_value      Decimal
+  next_value     Decimal
   reference_date DateTime //colocar mes e ano somente
   payment_date   DateTime // vencimento do boleto desta fatura
   next_invoice   DateTime //quando deve faturar a proxima

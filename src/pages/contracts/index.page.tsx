@@ -122,11 +122,11 @@ export default function Contracts() {
                           <Text size="sm">{contract.nextInvoice}</Text>
                         </td>
                         <td className="px-2 py-2 border-b border-gray-600 bg-gray-700 text-center">
-                          <Button size="small">
-                            <Link href={`/contracts/${contract.id}`}>
+                          <Link href={`/contracts/${contract.id}`}>
+                            <Button size="small">
                               <PencilSimpleLine />
-                            </Link>
-                          </Button>
+                            </Button>
+                          </Link>
                         </td>
                       </tr>
                     );

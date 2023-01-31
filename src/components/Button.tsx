@@ -12,10 +12,13 @@ export const button = cva(["uppercase rounded"], {
         "hover:bg-blue-700",
       ],
       secondary: [
-        "bg-white",
-        "text-gray-800",
-        "border-gray-400",
-        "hover:bg-gray-100",
+        "bg-transparent",
+        "text-blue-600",
+        "border",
+        "border-blue-600",
+        "hover:text-white",
+        "hover:bg-blue-600",
+        "hover:bg-blue-600",
       ],
     },
     size: {

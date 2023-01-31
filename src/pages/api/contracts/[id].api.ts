@@ -55,5 +55,41 @@ export default async function handler(
     return formatDateStringToBrDate(date);
   }
 
-  res.status(200).json(contract);
+  const result = {
+    id: contract.id,
+    name: contract.name,
+    number: contract.number,
+    modality: {
+      id: contract.Modality.id,
+      name: contract.Modality.name,
+    },
+    initialDate: getInitialDate(contract.initial_date),
+    dueDate: getNextInvoiceDate(contract),
+    nextInvoice: getDueDate(contract),
+    renewals: contract.renewals.map((renewal) => {
+      return {
+        id: renewal.id,
+        contractId: renewal.contract_id,
+        dueDate: renewal.due_date,
+        initialDate: renewal.initial_date,
+        number: renewal.number,
+      };
+    }),
+    invoices: contract.invoices.map((invoice) => {
+      return {
+        id: invoice.id,
+        contractId: invoice.contractId,
+        description: invoice.description,
+        nextValue: invoice.net_value,
+        nextInvoice: invoice.next_invoice,
+        number: invoice.number,
+        paymentDate: invoice.payment_date,
+        referenceDate: invoice.reference_date,
+        taxes: invoice.taxes,
+        value: invoice.value,
+      };
+    }),
+  };
+
+  res.status(200).json(result);
 }
